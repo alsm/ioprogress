@@ -3,7 +3,6 @@ package ioprogress
 import (
 	"fmt"
 	"io"
-	"math"
 	"os"
 	"strings"
 )
@@ -81,7 +80,9 @@ func DrawTextFormatBar(width int64) DrawTextFormatFunc {
 	width -= 2
 
 	return func(progress, total int64) string {
-		current := int64((math.Max(float64(progress), 1.0) / math.Max(float64(total), 1.0)) * float64(width))
+		progress = max(progress, 1)
+		total = max(total, progress)
+		current := int64((float64(progress) / float64(total)) * float64(width))
 		return fmt.Sprintf(
 			"[%s%s]",
 			strings.Repeat("=", int(current)),
@@ -102,4 +103,11 @@ func byteUnitStr(n int64) string {
 	}
 
 	return fmt.Sprintf("%.3g %s", size, unit)
+}
+
+func max(x, y int64) int64 {
+	if x > y {
+		return x
+	}
+	return y
 }

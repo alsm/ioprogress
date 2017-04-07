@@ -98,7 +98,6 @@ func (r *Reader) initProgress() {
 	var zeroDraw time.Time
 	r.lastDraw = zeroDraw
 	r.drawProgress()
-	r.lastDraw = zeroDraw
 }
 
 func (r *Reader) drawFunc() DrawFunc {
