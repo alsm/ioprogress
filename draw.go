@@ -90,6 +90,20 @@ func DrawTextFormatBar(width int64) DrawTextFormatFunc {
 	}
 }
 
+func DrawTextFormatBarWithIndicator(width int64, indicator rune) DrawTextFormatFunc {
+	width -= 2
+
+	return func(progress, total int64) string {
+		progress = max(progress, 1)
+		total = max(total, progress)
+		current := int64((float64(progress) / float64(total)) * float64(width))
+		return fmt.Sprintf(
+			"[%s%s]",
+			strings.Repeat(string(indicator), int(current)),
+			strings.Repeat(" ", int(width-current)))
+	}
+}
+
 func byteUnitStr(n int64) string {
 	var unit string
 	size := float64(n)
